@@ -2,6 +2,7 @@
 
 
 
+
 graphics::graphics()
 {
     hdc = CreateCompatibleDC(nullptr);
@@ -15,19 +16,22 @@ graphics::~graphics()
 
 void graphics::putPixel(int x, int y, color col)
 {
-    BYTE* p = ((BYTE*)backBuffer.bmBits) + y * backBuffer.bmWidthBytes + x * sizeof(color);
-
-    color* cp = (color *)p;
-    *cp = col;
-    // <=> 
-    //*p++ = col.b; // blue
-    //*p++ = col.g; // green
-    //*p++ = col.r;
-    //*p = col.a;
+    y = backBuffer.bmHeight - 1 - y;
+    if (0 < x && x < backBuffer.bmWidth - 1 && 0 < y && y < backBuffer.bmHeight - 1) {
+        BYTE* p = ((BYTE*)backBuffer.bmBits) + y * backBuffer.bmWidthBytes + x * sizeof(color);
+        color* cp = (color *)p;
+        *cp = col;
+        // <=> 
+        //*p++ = col.b; // blue
+        //*p++ = col.g; // green
+        //*p++ = col.r;
+        //*p = col.a
+    }
 }
 
 color graphics::getPixel(int x, int y)
 {
+    y = backBuffer.bmHeight - 1 - y;
     BYTE* p = ((BYTE*)backBuffer.bmBits) + y * backBuffer.bmWidthBytes + x * sizeof(BYTE) * 4;
     color out{*p++, *p++ ,*p++ ,*p };
     return out;
@@ -69,3 +73,5 @@ void graphics::onResize(int width, int height, color clearColor)
         }
     }
 }
+
+

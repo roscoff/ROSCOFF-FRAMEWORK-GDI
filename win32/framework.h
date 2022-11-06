@@ -1,5 +1,6 @@
 #pragma once
 #include "graphics.h"
+#include "meshBuilder.h"
 
 class framework : public graphics{
 public:
@@ -8,5 +9,5 @@ public:
 	void onKeyboardEvent();
 	void update();
 private:
-
+	meshBuilder mb;
 };
